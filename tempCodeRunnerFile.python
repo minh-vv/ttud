@@ -1,0 +1,25 @@
+from docx import Document
+import random
+
+# Load the document
+input_path = "/mnt/data/Mạng máy tính - thi thực hành kì 20241 NO-KEY.docx"
+output_path = "/mnt/data/Mạng máy tính - thi thực hành kì 20241 NO-KEY_randomized.docx"
+
+doc = Document(input_path)
+
+# Extract all paragraphs into a list of tuples (text, style)
+paragraphs = [(p.text, p.style) for p in doc.paragraphs if p.text.strip()]
+
+# Randomize the order of the paragraphs
+random.shuffle(paragraphs)
+
+# Create a new document and add the randomized paragraphs
+new_doc = Document()
+for text, style in paragraphs:
+    new_paragraph = new_doc.add_paragraph(text)
+    new_paragraph.style = style
+
+# Save the new document
+new_doc.save(output_path)
+
+output_path

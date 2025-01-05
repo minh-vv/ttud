@@ -1,0 +1,88 @@
+sửa lại code
+#include <bits/stdc++.h>
+using namespace std;
+int n,m;
+pair <int,int> toado[1001];
+struct edge{
+    int x,y,w;
+}
+vector <edge> canhRes;
+vector <edge> canh;
+int parent[10001];
+void setmem(){
+    for (int i= 1;i <=n;i++){
+        parent[i] = i;
+        sz[i]=i;
+    }
+}
+
+int findSet(int u) {
+    if (u != parent[u]) parent[u] = findSet(parent[u]);
+    return parent[u];
+}
+
+bool unionSet(int u, int v) {
+    u = findSet(u);
+    v = findSet(v);
+    if (u == v) return false;
+    if (sz[a]<sz[b] )swap(a,b);
+    parent[b] = a;
+    sz[a] += sz[b];
+    return true;
+}
+
+
+
+void setw(){
+    for (int i= 1; i<n ; i++){
+        for (int j= i+1; j<=n; j++){
+            int w = (toado[i].first - toado[j].first) * (toado[i].first - toado[j].first) + (toado[i].second - toado[j].second) * (toado[i].second - toado[j].second);
+            canh.push_back({i,j,w});
+        }
+    }
+}
+void inp(){
+    cin >> n;
+    for (int i = 1; i <= n;i++){
+        cin >> toado[i].first >> toado[i].second;
+    }
+    setw();
+    cin >> m;
+    for (int i = 1; i <= m;i++){
+        edge e;
+        cin >> e.x >> e.y;
+        e.w = (toado[i].first - toado[j].first) * (toado[i].first - toado[j].first) + (toado[i].second - toado[j].second) * (toado[i].second - toado[j].second);
+        canhRes.push_back(e);
+        canh.pop(e);
+    }
+}
+
+void cmp(edge e1, edge e2){
+    return e1.w < e2.w;
+}
+
+void kruskall(){
+    int d = 0;
+    sort(canh.begin(), canh.end(),cmp);
+    for (int i = 0; i < m ; i++ ){
+        if (canhRes.size() == n-1) break;
+        edge e = canh[i];
+        if (unionSet(e.x,e.y)){
+            canhRes.push_back(e);
+            d += e.w;
+        }
+    }
+    if (canhRes.size () != n-1){
+        cout << -1;
+    }
+    else {
+        cout << d ;
+    }
+}
+
+int main(){
+    inp();
+    kruskall();
+
+}
+end
